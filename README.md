@@ -4,7 +4,6 @@
 
 - Wireless Access Point
 - Message Board
-- Data Federation
 - ...
 
 ## Bill of Materials
