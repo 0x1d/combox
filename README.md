@@ -1,4 +1,4 @@
-# Truthers Communication Module
+# Communication Box
 
 ## Features
 
@@ -14,7 +14,7 @@
 ## Quickstart
 
 ```
-make raspios-armhf
+make armhf
 ```
 
 ## Setup

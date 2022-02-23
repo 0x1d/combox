@@ -14,9 +14,9 @@ help: Makefile
 compose-%:
 	docker-compose -f $@.yaml up
 
+# build-deps: golang qemu-system-arm wget unzip
 .PHONY: buildsys
 buildsys: .deps
-	#sudo apt-get update && sudo apt-get install golang qemu-system-arm wget unzip
 	cd .deps && \
 		wget https://releases.hashicorp.com/packer/1.7.10/packer_1.7.10_linux_amd64.zip && \
 		unzip packer_1.7.10_linux_amd64.zip && \
@@ -30,7 +30,7 @@ buildsys: .deps
 
 
 ## %		armhf	
-%: buildsys
+armhf: buildsys
 	sudo PACKER_PLUGIN_PATH=${ARM_BUILDER_PATH} \
 		./deps/packer build $@.pkr.hcl
 
