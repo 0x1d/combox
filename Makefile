@@ -14,22 +14,25 @@ help: Makefile
 compose-%:
 	docker-compose -f $@.yaml up
 
-sys-debian:
-	curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-	sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-	sudo apt-get update && sudo apt-get install golang qemu-system-arm packer
+.PHONY: buildsys
+buildsys: .deps
+	#sudo apt-get update && sudo apt-get install golang qemu-system-arm wget unzip
+	cd .deps && \
+		wget https://releases.hashicorp.com/packer/1.7.10/packer_1.7.10_linux_amd64.zip && \
+		unzip packer_1.7.10_linux_amd64.zip && \
+		rm packer_1.7.10_linux_amd64.zip
 
 ## .deps		Build dependencies from source
-.deps: sys-debian
+.deps:
 	-mkdir -p ${DEPS_DIR}
 	-git clone ${ARM_PACKER} ${ARM_BUILDER_PATH}
 	cd ${ARM_BUILDER_PATH} && go mod download && go build
 
 
 ## %		armhf	
-%: .deps
+%: buildsys
 	sudo PACKER_PLUGIN_PATH=${ARM_BUILDER_PATH} \
-		packer build $@.pkr.hcl
+		./deps/packer build $@.pkr.hcl
 
 ## cleanup		Delete device builder sources
 cleanup:
