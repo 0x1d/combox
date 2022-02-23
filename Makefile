@@ -28,7 +28,7 @@ compose-%:
 	git clone ${ARM_PACKER} ${ARM_BUILDER_PATH}
 	cd ${ARM_BUILDER_PATH} && go mod download && go build
 
-## %		armhf	
+## %		armhf
 armhf: ${PACKER_PLUGIN_PATH}
 	PACKER_PLUGIN_PATH=$< \
 		${DEPS_DIR}/packer build $@.pkr.hcl
@@ -37,5 +37,7 @@ armhf: ${PACKER_PLUGIN_PATH}
 cleanup:
 	rm -rf ${DEPS_DIR}
 
+dbuild:
+	docker run --rm --privileged -v /dev:/dev -v ${PWD}:/build mkaczanowski/packer-builder-arm build armhf.pkr.hcl
 ##
 ##
