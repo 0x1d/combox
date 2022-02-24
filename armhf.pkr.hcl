@@ -1,6 +1,6 @@
 #packer {
 #  required_plugins {
-#    myawesomecloud = {
+#    arm = {
 #      version = "master"
 #      source  = "github.com/mkaczanowski/packer-builder-arm"
 #    }
@@ -40,13 +40,18 @@ source "arm" "combox" {
 build {
   sources = ["source.arm.combox"]
 
+  #provisioner "file" {
+  #  source      = "wpa_supplicant.conf"
+  #  destination = "/boot/wpa_supplicant.conf"
+  #}
+
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts         = ["bootstrap.sh"]
   }
 
   provisioner "shell" {
-    inline = ["curl -sL https://install.raspap.com > raspap.sh"]
+    inline = ["curl -sL https://install.raspap.com | bash"]
   }
 
 }

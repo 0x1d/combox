@@ -10,7 +10,3 @@ echo -e "cgroup_memory=1 cgroup_enable=memory $(cat /boot/cmdline.txt)" > /boot/
 apt update
 apt full-upgrade -y
 apt install -y git curl
-
-# set hostname
-sed -i 's/raspberrypi/tcm/g' /etc/hosts
-sed -i 's/raspberrypi/tcm/g' /etc/hostname
