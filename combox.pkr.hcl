@@ -1,21 +1,26 @@
-#packer {
-#  required_plugins {
-#    arm = {
-#      version = "master"
-#      source  = "github.com/mkaczanowski/packer-builder-arm"
-#    }
-#  }
-#}
+variable "arch" {
+  default = "armhf"
+}
+variable "image" {
+  default = {
+    arm64 = "https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64.zip"
+    armhf = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
+  }
+}
+
+locals {
+  image = lookup(var.image, var.arch, "armhf")
+}
 
 source "arm" "combox" {
   file_checksum_type    = "sha256"
-  file_checksum_url     = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip.sha256"
+  file_checksum_url     = "${local.image}.sha256"
   file_target_extension = "zip"
-  file_urls             = ["https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"]
+  file_urls             = [local.image]
   image_build_method    = "reuse"
   image_chroot_env      = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
-  image_path            = "combox-armhf.img"
-  image_size            = "2G"
+  image_path            = "combox-${var.arch}.img"
+  image_size            = "4G"
   image_type            = "dos"
   image_partitions {
     filesystem   = "vfat"

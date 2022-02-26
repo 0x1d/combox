@@ -9,4 +9,4 @@ echo -e "cgroup_memory=1 cgroup_enable=memory $(cat /boot/cmdline.txt)" > /boot/
 # install stuff
 apt update
 apt full-upgrade -y
-apt install -y git curl
+apt install -y git curl docker.io docker-compose

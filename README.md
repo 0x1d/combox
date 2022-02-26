@@ -24,7 +24,7 @@ Use [etcher](https://www.balena.io/etcher/)
 *OR*  
 proceeed as follows:
 ```
-# determin SD card (e.g. /dev/sdc)
+# determin SD card (e.g. /dev/sdx)
 lsblk 
 
 # flash
