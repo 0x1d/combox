@@ -36,7 +36,7 @@ sudo dd if=combox-armhf.img of=$SDCARD_PATH status=progress
 
 You need a Linux x86 system with `make` and `Docker` installed to build the device image.
 ```
-make build
+make arm64
 ```
 
 ## Links
