@@ -1,6 +1,11 @@
 variable "arch" {
   default = "armhf"
 }
+
+variable "installer" {
+  default = "bootstrap/nomad.sh"
+}
+
 variable "image" {
   default = {
     arm64 = "https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64.zip"
@@ -45,18 +50,24 @@ source "arm" "combox" {
 build {
   sources = ["source.arm.combox"]
 
-  #provisioner "file" {
-  #  source      = "wpa_supplicant.conf"
-  #  destination = "/boot/wpa_supplicant.conf"
-  #}
+  #  provisioner "file" {
+  #    source      = "config/wpa_supplicant.conf"
+  #    destination = "/boot/wpa_supplicant.conf"
+  #  }
 
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts         = ["bootstrap.sh"]
+    scripts         = ["${var.installer}"]
   }
 
-  provisioner "shell" {
-    inline = ["curl -sL https://install.raspap.com | bash"]
+  provisioner "file" {
+    source      = "config/env.example"
+    destination = "/opt/.env"
   }
+
+
+  #provisioner "shell" {
+  #  inline = ["curl -sL https://install.raspap.com | bash"]
+  #}
 
 }
