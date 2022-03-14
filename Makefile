@@ -4,7 +4,7 @@
 
 SHELL	?=	bash
 BUILDER	?=	mkaczanowski/packer-builder-arm
-INSTALLER?=bootstrap/raspios.sh
+INSTALLER?=bootstrap/nomad.sh
 
 default: help
 
