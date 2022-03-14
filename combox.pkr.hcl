@@ -1,3 +1,6 @@
+variable "name" {
+  default = "combobox"
+}
 variable "arch" {
   default = "armhf"
 }
@@ -24,7 +27,7 @@ source "arm" "combox" {
   file_urls             = [local.image]
   image_build_method    = "reuse"
   image_chroot_env      = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
-  image_path            = "combox-${var.arch}.img"
+  image_path            = "${var.name}-${var.arch}.img"
   image_size            = "4G"
   image_type            = "dos"
   image_partitions {

@@ -9,4 +9,4 @@ apt full-upgrade -y
 apt install -y git curl unzip tmux vim
 
 # Access Point
-#curl -sL https://install.raspap.com | bash
+curl -sL https://install.raspap.com | bash

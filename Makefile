@@ -4,13 +4,14 @@
 
 SHELL	?=	bash
 BUILDER	?=	mkaczanowski/packer-builder-arm
+INSTALLER?=bootstrap/raspios.sh
 
 default: help
 
 help: Makefile
 	@sed -n 's/^##//p' $<
 
-## build	Create device image
+## armhf,arm64	build device image
 %:
 	docker run --rm --privileged \
 		-v /dev:/dev \
@@ -18,7 +19,21 @@ help: Makefile
 		-w /build \
 		${BUILDER} build \
 			-var arch=${@} \
-			-var installer=./bootstrap/epicyon-onion.sh \
+			-var name=${NAME} \
+			-var installer=${INSTALLER} \
 			/build/combox.pkr.hcl
+
+raspap:
+	INSTALLER=bootstrap/raspap.sh \
+	NAME=raspap \
+		$(MAKE) armhf
+nomad:
+	INSTALLER=bootstrap/nomad.sh \
+	NAME=nomad \
+		$(MAKE) arm64
+epicyon:
+	INSTALLER=bootstrap/epicyon-onion.sh \
+	NAME=epicyon \
+		$(MAKE) arm64
 
 ##
