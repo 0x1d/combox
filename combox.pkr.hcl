@@ -6,7 +6,11 @@ variable "arch" {
 }
 
 variable "installer" {
-  default = "bootstrap/nomad.sh"
+  default = "bootstrap/base/nomad.sh"
+}
+
+variable "domain" {
+  default = "my.sprocket.space"
 }
 
 variable "image" {
@@ -61,6 +65,7 @@ build {
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts         = ["${var.installer}"]
+    environment_vars = ["DOMAIN=${var.domain}", "ARCH=${var.arch}", "HOSTNAME=${var.name}"]
   }
 
   provisioner "file" {

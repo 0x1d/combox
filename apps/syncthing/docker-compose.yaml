@@ -1,21 +1,6 @@
 version: '3'
 
 services:
-  app:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    env_file: docker.env
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ./app/site:/var/www/html
-    labels:
-      - flame.type=application
-      - flame.name=Nginx Proxy Manager
-      - flame.url=https://${NGINX_PROXY_HOST}:81
-      - flame.icon=docker
   syncthing:
     image: lscr.io/linuxserver/syncthing
     container_name: syncthing
@@ -32,8 +17,23 @@ services:
     labels:
       - flame.type=application
       - flame.name=Syncthing
-      - flame.url=https://${SYNCTHING_HOST}
+      - flame.url=https://${DOMAIN}
       - flame.icon=docker # optional, default is "docker"      
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    env_file: docker.env
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./app/site:/var/www/html
+    labels:
+      - flame.type=application
+      - flame.name=Nginx Proxy Manager
+      - flame.url=https://${DOMAIN}:81
+      - flame.icon=docker
   flame:
     image: pawelmalak/flame:latest
     container_name: flame

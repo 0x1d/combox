@@ -24,16 +24,16 @@ help: Makefile
 			/build/combox.pkr.hcl
 
 raspap:
-	INSTALLER=bootstrap/raspap.sh \
+	INSTALLER=bootstrap/base/raspap.sh \
 	NAME=raspap \
 		$(MAKE) armhf
 nomad:
-	INSTALLER=bootstrap/nomad.sh \
+	INSTALLER=bootstrap/base/nomad.sh \
 	NAME=nomad \
-		$(MAKE) arm64
-epicyon:
-	INSTALLER=bootstrap/epicyon-onion.sh \
-	NAME=epicyon \
+		$(MAKE) armhf
+docker:
+	INSTALLER=bootstrap/base/docker.sh \
+	NAME=docker \
 		$(MAKE) arm64
 
 ##
