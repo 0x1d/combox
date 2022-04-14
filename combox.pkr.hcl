@@ -2,7 +2,7 @@ variable "name" {
   default = "combobox"
 }
 variable "arch" {
-  default = "armhf"
+  default = "arm"
 }
 
 variable "installer" {
@@ -16,12 +16,12 @@ variable "domain" {
 variable "image" {
   default = {
     arm64 = "https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64.zip"
-    armhf = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
+    arm = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
   }
 }
 
 locals {
-  image = lookup(var.image, var.arch, "armhf")
+  image = lookup(var.image, var.arch, "arm")
 }
 
 source "arm" "combox" {

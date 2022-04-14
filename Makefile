@@ -2,9 +2,10 @@
 ## Machine Image Builds
 ##
 
-SHELL	?=	bash
-BUILDER	?=	mkaczanowski/packer-builder-arm
-INSTALLER?=bootstrap/nomad.sh
+SHELL		?=	bash
+BUILDER		?=	mkaczanowski/packer-builder-arm
+INSTALLER	?=	bootstrap/base/install.sh
+STACKS		?=	$(ls bootstrap/opt)
 
 default: help
 
@@ -23,17 +24,12 @@ help: Makefile
 			-var installer=${INSTALLER} \
 			/build/combox.pkr.hcl
 
-raspap:
-	INSTALLER=bootstrap/base/raspap.sh \
-	NAME=raspap \
-		$(MAKE) armhf
-nomad:
-	INSTALLER=bootstrap/base/nomad.sh \
-	NAME=nomad \
-		$(MAKE) armhf
-docker:
-	INSTALLER=bootstrap/base/docker.sh \
-	NAME=docker \
+base:
+	NAME=$@ $(MAKE) arm
+
+${STACKS}:
+	INSTALLER=bootstrap/opt/$@ \
+	NAME=$@ \
 		$(MAKE) arm64
 
 ##
