@@ -6,7 +6,7 @@ variable "arch" {
 }
 
 variable "installer" {
-  default = "bootstrap/base/nomad.sh"
+  default = "bootstrap/base/install.sh"
 }
 
 variable "domain" {
