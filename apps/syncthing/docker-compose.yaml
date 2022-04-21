@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  syncthing:
+    image: lscr.io/linuxserver/syncthing
+    container_name: syncthing
+    env_file: docker.env
+    restart: unless-stopped
+    volumes:
+      - ./app/site:/config/site
+      - ./sync:/config/Sync
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    labels:
+      - flame.type=application
+      - flame.name=Syncthing
+      - flame.url=https://${DOMAIN}
+      - flame.icon=docker # optional, default is "docker"      
+  nginx:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    env_file: docker.env
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./app/site:/var/www/html
+    labels:
+      - flame.type=application
+      - flame.name=Nginx Proxy Manager
+      - flame.url=https://${DOMAIN}:81
+      - flame.icon=docker
+  flame:
+    image: pawelmalak/flame:latest
+    container_name: flame
+    env_file: docker.env
+    volumes:
+      - ./app/flame/config.json:/app/data/config.json
+      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration feature
+    ports:
+      - 5005:5005
+    restart: unless-stopped

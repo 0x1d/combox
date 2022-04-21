@@ -43,3 +43,5 @@ make arm64
 
 - https://docs.raspap.com/faq/#headless
 - https://docs.raspap.com/ap-sta/
+
+- https://www.npmjs.com/package/ssb-to-graphml

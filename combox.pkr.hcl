@@ -1,20 +1,27 @@
+variable "name" {
+  default = "combobox"
+}
 variable "arch" {
-  default = "armhf"
+  default = "arm"
 }
 
 variable "installer" {
-  default = "bootstrap/nomad.sh"
+  default = "bootstrap/base/install.sh"
+}
+
+variable "domain" {
+  default = "my.sprocket.space"
 }
 
 variable "image" {
   default = {
     arm64 = "https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2022-01-28/2022-01-28-raspios-bullseye-arm64.zip"
-    armhf = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
+    arm = "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
   }
 }
 
 locals {
-  image = lookup(var.image, var.arch, "armhf")
+  image = lookup(var.image, var.arch, "arm")
 }
 
 source "arm" "combox" {
@@ -24,7 +31,7 @@ source "arm" "combox" {
   file_urls             = [local.image]
   image_build_method    = "reuse"
   image_chroot_env      = ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"]
-  image_path            = "combox-${var.arch}.img"
+  image_path            = "${var.name}-${var.arch}.img"
   image_size            = "4G"
   image_type            = "dos"
   image_partitions {
@@ -58,6 +65,7 @@ build {
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts         = ["${var.installer}"]
+    environment_vars = ["DOMAIN=${var.domain}", "ARCH=${var.arch}", "HOSTNAME=${var.name}"]
   }
 
   provisioner "file" {

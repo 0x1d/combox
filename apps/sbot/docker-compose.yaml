@@ -1,0 +1,14 @@
+version: '3'
+services:
+  sbot:
+    image: wirelos/ssb-pub
+    volumes:
+      - ./ssb-pub/:/home/node/.ssb/
+    ports:
+      - 8008:8008
+    restart: unless-stopped
+  healer:
+    image: ahdinosaur/healer
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    restart: unless-stopped
